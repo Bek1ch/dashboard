@@ -4,7 +4,7 @@ const login = 'admin';
 const password = 'admin';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://dashboard.mps.gov.kz/api/',
+    baseURL: 'http://89.219.23.53/api',
     auth: {
         username: login,
         password

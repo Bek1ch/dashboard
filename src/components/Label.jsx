@@ -1,94 +1,55 @@
-import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
 
-// const mockLabelData = [
-//   { label: 'Инциденты', value: 400, color: '#0088FE' },
-//   { label: 'Консультации', value: 300, color: '#00C49F' },
-//   { label: 'Благодарность', value: 300, color: '#FFBB28' },
-//   { label: 'Жалобы', value: 200, color: '#FF8042' },
-// ];
+const COLORS = [
+  "#7bd784",
+  "#dd7576",
+  "#152d5b",
+  "#76abdd",
+  "#e69b58",
+  "#3c7782",
+];
 
-const dataColors = {
-  Благодарность: '#00d492',
-  Жалоба: '#FF5733',
-  // 'Запрос на обслуживание': '#FFBB28',
-  Инцидент: '#0080ff',
-  Консультация: '#f4970a',
-  // Предложение: '#c2c2c2'
-}
-
-const sizing = {
-  margin: { right: 5 },
-  width: 300,
-  height: 400,
-};
-
-const  PieChartWithCustomizedLabel = ({data}) => {
-  const chartData = useMemo(() => {
-    const keys = Object.keys(data);
-    keys.splice(5, 1);
-    keys.splice(3, 1);
-    const normalizedData = keys.map(key => {
-      // console.log(key);
-      const chartObj = {
-        label: key,
-        value: data[key],
-        color: dataColors[key],
-      }
-      return chartObj
-    })
-
-    const totalSum = normalizedData.reduce((acc, item) => {
-      return acc + item.value
-    }, 0);
-    // console.log(totalSum)
-
-    return {
-      data: normalizedData,
-      total: totalSum
-    }
-  }, [data])
-  
-  const getArcLabel = (params) => {
-    const percent = params.value / chartData.total;
-    return `${(percent * 100).toFixed(0)}%`;
-  };
+const PieChartWithCustomizedLabel = ({ data }) => {
+  const dataArr = useMemo(() => {
+    if (!data) return [];
+    const nData = Object.keys(data).map((key) => {
+      const chartObj = { name: key, value: data[key] };
+      return chartObj;
+    });
+    return nData;
+  }, [data]);
 
   return (
-    <PieChart
-    
-      series={[
-        {
-          outerRadius: 120,
-          data: chartData.data,
-          arcLabel: getArcLabel,
-        },
-      ]}
-      sx={{
-        [`& .${pieArcLabelClasses.root}`]: {
-          fill: 'white',
-          fontSize: 14,
-        },
-      }}
-      slotProps={{
-        legend: {
-          direction: "row",
-          drawingArea: {
-            width: 300,
-            height: 100,
-            left: -20,
-            bottom: 620,
-            right: 0,
-            top: 0
-
-          } 
-        }
-      }}
-      {...sizing}
-      
-    />
-
-
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={dataArr}
+          cx="50%"
+          cy="50%"
+          innerRadius={90}
+          paddingAngle={8}
+          dataKey="value"
+        >
+          {dataArr.map((_, index) => (
+            <Cell
+              key={`cell-${index}`}
+              stroke={COLORS[index]}
+              fill={COLORS[index]}
+            />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
   );
-}
+};
 export default PieChartWithCustomizedLabel;

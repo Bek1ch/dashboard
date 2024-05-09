@@ -1,24 +1,16 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import DoneIcon from '@mui/icons-material/Done';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import WorkIcon from '@mui/icons-material/Work';
 import PieChart from "../../components/PieChart";
-import PieChartWithCustomizedLabel from '../../components/Label';
-import React, { useEffect, useMemo, useState } from 'react';
-import {fetchRequestStatistics, fetchStatistics, fetchStatusStatistics} from "../../api";
+import PieChartWithCustomizedLabel from "../../components/Label";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  fetchRequestStatistics,
+  fetchStatistics,
+  fetchStatusStatistics,
+} from "../../api";
 import DatePicker from "react-widgets/DatePicker";
-
 
 const Dashboard = () => {
   // State
@@ -26,187 +18,111 @@ const Dashboard = () => {
   const [statusStatisticsData, setStatusStatisticsData] = useState(null);
   const [requestStatisticsData, setRequestStatisticsData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const normalizedStatusData = useMemo(() => {
-    if(!statusStatisticsData) return []
-    return Object.keys(statusStatisticsData).map(key => {
-      return statusStatisticsData[key] 
-    })
-  }, [statusStatisticsData])
+    if (!statusStatisticsData) return [];
+    return Object.keys(statusStatisticsData).map((key) => {
+      return statusStatisticsData[key];
+    });
+  }, [statusStatisticsData]);
 
   const totalStatusCount = useMemo(() => {
-    if(!normalizedStatusData) return 0
+    if (!normalizedStatusData) return 0;
     return normalizedStatusData.reduce((acc, item) => {
-      return acc + item
+      return acc + item;
     }, 0);
-  }, [normalizedStatusData])
+  }, [normalizedStatusData]);
 
   // console.log(totalStatusCount)
-  
+
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
-        setIsLoading(true)
-        const data = await Promise.allSettled([fetchStatistics(), fetchRequestStatistics(), fetchStatusStatistics()])
-        setStatisticsData(data.at(0).value)
-        setRequestStatisticsData(data.at(1).value)
-        setStatusStatisticsData(data.at(2).value)
+        setIsLoading(true);
+        const data = await Promise.allSettled([
+          fetchStatistics(),
+          fetchRequestStatistics(),
+          fetchStatusStatistics(),
+        ]);
+        setStatisticsData(data.at(0).value);
+        setRequestStatisticsData(data.at(1).value);
+        setStatusStatisticsData(data.at(2).value);
         // console.log(data.at(2).value)
       } catch (error) {
-        console.error('Ошибка при получении данных:', error);
+        console.error("Ошибка при получении данных:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     };
-  
+
     fetchDataFromApi(); // Вызываем функцию для получения данных из API
-  }, []); 
+  }, []);
 
-
-  if(isLoading) return 'loading...'
-
+  if (isLoading) return "loading...";
 
   return (
-    
-    
-    <Box m="20px" >
+    <Box m="20px">
       {/* HEADER */}
-      <Box display="flex" columnGap={2}>
-        <DatePicker placeholder="01/01/2024" />  
-        <DatePicker placeholder="01/01/2024" />  
+      <Box display="flex" alignItems="center" columnGap={4}>
+        <Box display="flex" columnGap={2}>
+          <DatePicker placeholder="01/01/2024" />
+          <DatePicker placeholder="01/01/2024" />
+        </Box>
+        <Button
+          sx={{
+            backgroundColor: colors.grey[800],
+            color: "black",
+            paddingInline: 8,
+            textTransform: "capitalize",
+            fontWeight: 600,
+            fontSize: 16,
+          }}
+          variant="contained"
+        >
+          Обновить
+        </Button>
       </Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={3} >
-
- 
-
-     
-        {/* <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Загрузка отчетов
-          </Button>
-        </Box> */}
-      </Box>
-
       {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(5, 1fr)"
-        gridAutoRows="110px"
-        gap="20px"
-      >
-        {/* Start cards */}
-        <Box
-          backgroundColor="#81ADC1"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={2}
-        >
-          <StatBox
-            title={statusStatisticsData?.ALL}
-            subtitle={<span style={{ color: 'black' }}>Всего обращении</span>}
-            // progress="0.75"
-            // increase="+14%"
-            icon={
-              <ArrowCircleUpIcon
-                sx={{ color: "black", fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          backgroundColor="#FB6451"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={2}
-        >
-          <StatBox
-            // title={statusStatisticsData?.ALL}
-            title={27}
-            subtitle={<span style={{ color: 'black' }}>В Просроченные</span>}
-            // progress="0.75"
-            // increase="+14%"
-            icon={
-              <ArrowCircleUpIcon
-                sx={{ color: "black", fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          backgroundColor="#F3A512"
-          display="flex"
-          alignItems="center"   
-          justifyContent="center"
-          borderRadius={2}
-      
+      <Box marginTop={4} display="flex" columnGap={8}>
+        <Box>
+          <Typography color="black" fontWeight={700} fontSize={72} variant="h1">
+            {statusStatisticsData?.ALL}
+          </Typography>
+          <Typography
+            color="black"
+            whiteSpace="nowrap"
+            fontWeight="600"
+            variant="p"
           >
-          <StatBox
-            title={statusStatisticsData?.ASSIGNED}
-            subtitle={<span style={{ color: 'black' }}>В ожидании</span>}
-            progress="0.50"
-            // increase="+21%"
-            icon={
-              <AccessTimeIcon
-                sx={{ color: "black", fontSize: "26px" }}
-              />
-            }
-          />
+            Всего поступило заявок за выбранный период
+          </Typography>
         </Box>
-        <Box
-          backgroundColor="#00c300"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={2}
-        >
-          <StatBox
-            title={statusStatisticsData?.CLOSED}
-            subtitle={<span style={{ color: 'black' }}>Закрытые</span>}
-            progress="0.50"
-            // increase="+21%"
-            icon={
-              <WorkIcon
-                sx={{ color: "black", fontSize: "26px",  }}
-              />
-            }
-          />
+        <Box flex="1" alignSelf="end">
+          <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap="20px">
+            {/* Start cards */}
+            <StatBox bgColor="#f43434" title={27} subtitle={"Просроченные"} />
+            <StatBox bgColor="#f67d0c" title={56} subtitle={"В ожидании"} />
+            <StatBox
+              bgColor="#3748ed"
+              title={statusStatisticsData?.ASSIGNED}
+              subtitle={"В Работе"}
+            />
+            <StatBox
+              bgColor="#505156"
+              title={30}
+              subtitle={"Закр. с просрочкой"}
+            />
+            <StatBox
+              bgColor="#1b9c38"
+              title={statusStatisticsData?.CLOSED}
+              subtitle={"Закрытые"}
+            />
+            {/* End cards */}
+          </Box>
         </Box>
-          <Box
-            backgroundColor="#1474FF"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={2}
-
-          >
-          <StatBox
-            title={statusStatisticsData?.SOLVED}
-            subtitle={<span style={{ color: 'black' }}>Закрыты с просрочкой</span>}
-            // progress="0.30"
-            // increase="+5%"
-            icon={
-              <DoneIcon
-                sx={{ color: "black", fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        {/* End cards */}
-       
       </Box>
       <Box
         mt={4}
@@ -214,10 +130,7 @@ const Dashboard = () => {
         gridTemplateColumns="repeat(3, 1fr)"
         gap="20px"
       >
-
-      <Box
-          backgroundColor={colors.primary[400]}
-        >
+        <Box backgroundColor={colors.primary[400]}>
           <Box
             mt="20px"
             p="0 30px"
@@ -231,15 +144,13 @@ const Dashboard = () => {
                 fontWeight="700"
                 color={colors.grey[100]}
               >
-                  
-                 Динамика за год
+                Динамика за год
               </Typography>
-              <Typography 
+              <Typography
                 variant="h4"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
-              >
-              </Typography>
+              ></Typography>
             </Box>
             <Box>
               <IconButton>
@@ -249,13 +160,11 @@ const Dashboard = () => {
               </IconButton>
             </Box>
           </Box>
-          <Box height="370px" m="-40px 0 0 0">
-            <LineChart data={statisticsData}  isDashboard={true} />
+          <Box maxHeight={380} height="100%">
+            <LineChart data={statisticsData} />
           </Box>
         </Box>
-        <Box
-          backgroundColor={colors.primary[400]}
-          >
+        <Box backgroundColor={colors.primary[400]}>
           <Box
             mt="20px"
             p="0 30px"
@@ -269,27 +178,23 @@ const Dashboard = () => {
                 fontWeight="700"
                 color={colors.grey[100]}
               >
-                 Источник обращений
+                Источник обращений
               </Typography>
               <Typography
                 variant="h4"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
-              >
-              </Typography>
+              ></Typography>
             </Box>
             <Box>
-              <IconButton>
-              </IconButton>
+              <IconButton></IconButton>
             </Box>
           </Box>
-          <Box height="370px" m="-40px" display="flex" justifyContent="center" alignItems="center">
-            <PieChart  data={statusStatisticsData} count={totalStatusCount}  />    
+          <Box maxHeight={380} height="100%">
+            <PieChart data={statusStatisticsData} count={totalStatusCount} />
           </Box>
         </Box>
-        <Box
-          backgroundColor={colors.primary[400]}
-          >
+        <Box backgroundColor={colors.primary[400]}>
           <Box
             mt="20px"
             p="0 30px"
@@ -303,27 +208,24 @@ const Dashboard = () => {
                 fontWeight="700"
                 color={colors.grey[100]}
               >
-                 Типы запросов
+                Типы запросов
               </Typography>
               <Typography
                 variant="h4"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
-              >
-              </Typography>
+              ></Typography>
             </Box>
             <Box>
-              <IconButton>
-              </IconButton>
+              <IconButton></IconButton>
             </Box>
           </Box>
-          <Box height="370px" m="-60px" p="-10px" display="flex" justifyContent="center" alignItems="center">
-          <PieChartWithCustomizedLabel data={requestStatisticsData} />
+          <Box maxHeight={380} height="100%">
+            <PieChartWithCustomizedLabel data={requestStatisticsData} />
           </Box>
         </Box>
       </Box>
     </Box>
-    
   );
 };
 
