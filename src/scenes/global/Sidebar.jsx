@@ -5,7 +5,7 @@ import {
   MenuItem,
   SubMenu,
 } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -58,6 +58,9 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
+        "& .ps-submenu-content": {
+          backgroundColor: "transparent",
+        },
       }}
     >
       <ProSidebar
@@ -67,7 +70,7 @@ const Sidebar = () => {
         }}
         collapsed={isCollapsed}
       >
-        <Menu style={{}} iconShape="square">
+        <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -87,9 +90,6 @@ const Sidebar = () => {
                 <Typography variant="h3" ml={3} color={colors.grey[100]}>
                   Меню
                 </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
-                </IconButton>
               </Box>
             )}
           </MenuItem>
@@ -97,8 +97,8 @@ const Sidebar = () => {
           <Box>
             <Item title="Ситуация по паводкам" to="/" icon={<FloodIcon />} />
             <SubMenu label="Панель ЕКЦ" icon={<SupportAgentIcon />}>
-              <Item subitem title="Мониторинг" to="/dashboard" />
-              <Item subitem title="Структурное подразделение" to="/table" />
+              <Item subitem title="Мониторинг" to="/ekc/dashboard" />
+              <Item subitem title="Структурное подразделение" to="/ekc/table" />
             </SubMenu>
             {/* <Item
               title="Подразделения"

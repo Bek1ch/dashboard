@@ -42,9 +42,20 @@ const fetchRequestStatistics = async () => {
   }
 };
 
+const fetchDivisionsTableData = async () => {
+  try {
+    const response = await axios.get("/expert-tree-by-status-statistic");
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при получении данных:", error);
+    throw error;
+  }
+};
+
 export {
   login,
   fetchStatistics,
   fetchRequestStatistics,
   fetchStatusStatistics,
+  fetchDivisionsTableData,
 };

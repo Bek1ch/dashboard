@@ -16,7 +16,6 @@ const LoginPage = () => {
       username: data.get("username"),
       password: data.get("password"),
     };
-    console.log(body);
     try {
       if (!body.username.length && !body.password.length) {
         throw new Error("username or password is empty");

@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import {
   PieChart as RechartsPieChart,
   Pie,
@@ -35,11 +36,13 @@ const renderCustomizedLabel = ({
   );
 };
 
-const PieChart = ({ data, count }) => {
+const PieChart = () => {
+  const { totalStatusCount } = useOutletContext();
+
   const callCenterStatus = {
     id: "Кол-центр",
     label: "Кол-центр",
-    value: count,
+    value: totalStatusCount,
     color: "#4551b5",
   };
 

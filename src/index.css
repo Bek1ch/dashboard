@@ -38,3 +38,27 @@ body,
 .ps-menu-button:hover {
   background-color: transparent !important;
 }
+
+.divisions-table {
+  width: 100%;
+  border-spacing: 4px;
+}
+
+.divisions-table .thead .th {
+  padding-inline: 16px;
+  padding-block: 4px;
+  background-color: #d3d3d3;
+  font-weight: 400;
+}
+
+.divisions-table .thead .th:nth-child(1) {
+  text-align: start;
+  width: 20rem;
+}
+
+.divisions-table .tbody .td {
+  padding-inline: 16px;
+  padding-block: 4px;
+  background-color: #ffffff;
+  font-weight: 400;
+}
