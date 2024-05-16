@@ -62,7 +62,7 @@ const Dashboard = () => {
   }, []);
 
   if (isLoading) return "loading...";
-
+  console.log(statusStatisticsData);
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -89,7 +89,7 @@ const Dashboard = () => {
       <Box marginTop={4} display="flex" columnGap={8}>
         <Box>
           <Typography color="black" fontWeight={700} fontSize={72} variant="h1">
-            {statusStatisticsData?.ALL}
+            {(statusStatisticsData?.ALL || 0).toLocaleString() ?? 0}
           </Typography>
           <Typography
             color="black"
@@ -103,21 +103,29 @@ const Dashboard = () => {
         <Box flex="1" alignSelf="end">
           <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap="20px">
             {/* Start cards */}
-            <StatBox bgColor="#f43434" title={27} subtitle={"Просроченные"} />
-            <StatBox bgColor="#f67d0c" title={56} subtitle={"В ожидании"} />
+            <StatBox
+              bgColor="#f43434"
+              title={statusStatisticsData?.EXPIRED ?? 0}
+              subtitle={"Просроченные"}
+            />
+            <StatBox
+              bgColor="#f67d0c"
+              title={statusStatisticsData?.WAITING ?? 0}
+              subtitle={"В ожидании"}
+            />
             <StatBox
               bgColor="#3748ed"
-              title={statusStatisticsData?.ASSIGNED}
+              title={statusStatisticsData?.ASSIGNED ?? 0}
               subtitle={"В Работе"}
             />
             <StatBox
               bgColor="#505156"
-              title={30}
+              title={statusStatisticsData?.CLOSED_EXPIRED ?? 0}
               subtitle={"Закр. с просрочкой"}
             />
             <StatBox
               bgColor="#1b9c38"
-              title={statusStatisticsData?.CLOSED}
+              title={(statusStatisticsData?.CLOSED || 0).toLocaleString() ?? 0}
               subtitle={"Закрытые"}
             />
             {/* End cards */}

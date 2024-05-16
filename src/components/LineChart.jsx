@@ -15,7 +15,7 @@ const LineChart = ({ data }) => {
       <RechartsLineChart
         data={data}
         margin={{
-          top: 60,
+          top: 45,
           right: 20,
           left: -20,
         }}

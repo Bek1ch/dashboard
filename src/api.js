@@ -1,10 +1,21 @@
 import { axios } from "./utils/axios";
 
+const login = async ({ username, password }) => {
+  try {
+    const res = await axios.post("/login", { username, password });
+    return {
+      data: res.data,
+      status: res.status,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const fetchStatistics = async () => {
   try {
     const response = await axios.get("/by-date-statistic");
     return response.data;
-    console.log(response.data);
   } catch (error) {
     console.error("Ошибка при получении данных:", error);
     throw error;
@@ -31,4 +42,9 @@ const fetchRequestStatistics = async () => {
   }
 };
 
-export { fetchStatistics, fetchRequestStatistics, fetchStatusStatistics };
+export {
+  login,
+  fetchStatistics,
+  fetchRequestStatistics,
+  fetchStatusStatistics,
+};

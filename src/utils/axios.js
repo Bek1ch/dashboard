@@ -1,14 +1,16 @@
-import axios from 'axios';
-
-const login = 'admin';
-const password = 'admin';
+import axios from "axios";
+import { TokenService } from "./token.service";
 
 const axiosInstance = axios.create({
-    baseURL: 'http://89.219.23.53/api',
-    auth: {
-        username: login,
-        password
-    },
+  baseURL: "http://89.219.23.53/api",
 });
 
-export { axiosInstance as axios}
+axiosInstance.interceptors.request.use(function (config) {
+  const token = TokenService.getToken();
+  if (!token) return config;
+  config.headers.Authorization = `Basic ${token}`;
+
+  return config;
+});
+
+export { axiosInstance as axios };
