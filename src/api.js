@@ -2,7 +2,17 @@ import { axios } from "./utils/axios";
 
 const login = async ({ username, password }) => {
   try {
-    const res = await axios.post("/login", { username, password });
+    var bodyFormData = new FormData();
+    bodyFormData.append('username', username);
+    bodyFormData.append('password', password);
+
+    const res = await axios({
+      method: "post",
+      url: "/login",
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
     return {
       data: res.data,
       status: res.status,
@@ -14,7 +24,7 @@ const login = async ({ username, password }) => {
 
 const fetchStatistics = async () => {
   try {
-    const response = await axios.get("/by-date-statistic");
+    const response = await axios.get("/by-date-statistic", { withCredentials: true });
     return response.data;
   } catch (error) {
     console.error("Ошибка при получении данных:", error);
@@ -24,7 +34,7 @@ const fetchStatistics = async () => {
 
 const fetchStatusStatistics = async () => {
   try {
-    const response = await axios.get("/by-status-statistic");
+    const response = await axios.get("/by-status-statistic", { withCredentials: true });
     return response.data;
   } catch (error) {
     console.error("Ошибка при получении данных:", error);
@@ -34,7 +44,7 @@ const fetchStatusStatistics = async () => {
 
 const fetchRequestStatistics = async () => {
   try {
-    const response = await axios.get("/by-request-type-statistic");
+    const response = await axios.get("/by-request-type-statistic", { withCredentials: true });
     return response.data;
   } catch (error) {
     console.error("Ошибка при получении данных:", error);
@@ -44,7 +54,7 @@ const fetchRequestStatistics = async () => {
 
 const fetchDivisionsTableData = async () => {
   try {
-    const response = await axios.get("/expert-tree-by-status-statistic");
+    const response = await axios.get("/expert-tree-by-status-statistic", { withCredentials: true });
     return response.data;
   } catch (error) {
     console.error("Ошибка при получении данных:", error);

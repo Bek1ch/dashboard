@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Собираем приложение
-RUN npm  build
+# RUN npm  build
 
 # Определяем команду для запуска приложения
 CMD ["npm", "start"]
