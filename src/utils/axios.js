@@ -3,7 +3,7 @@ import { TokenService } from "./token.service";
 
 const axiosInstance = axios.create({
   baseURL: "http://89.219.23.53:7070/api",
-  withCredentials: true
+  withCredentials: true,
 });
 //
 // axiosInstance.interceptors.request.use(function (config) {
