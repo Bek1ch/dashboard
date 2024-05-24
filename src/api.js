@@ -6,13 +6,8 @@ const login = async ({ username, password }) => {
     bodyFormData.append('username', username);
     bodyFormData.append('password', password);
 
-    const res = await axios({
-      method: "post",
-      url: "/login",
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
+    const res = await axios.post("/auth/signin", { username, password });
+    console.log(res);
     return {
       data: res.data,
       status: res.status,
