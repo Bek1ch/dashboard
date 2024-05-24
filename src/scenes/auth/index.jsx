@@ -23,7 +23,7 @@ const LoginPage = () => {
       const res = await login(body);
       if (res.status === 200 && res.data) {
         setIsError(false);
-        const token = btoa(body.username + ":" + body.password);
+        const token = res.data.jwt;
         console.log(token);
         TokenService.setToken("" + token);
         navigate("/");
