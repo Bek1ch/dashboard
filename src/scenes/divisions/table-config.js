@@ -1,5 +1,8 @@
-import { Typography } from "@mui/material";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Link, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
+import { setDepartaments } from "../../store/depsStore";
+import { setDepMetaData } from "../../store/applicationsStore";
 
 const columnHelper = createColumnHelper();
 
@@ -7,7 +10,34 @@ export const divisionsTableColumns = [
   columnHelper.accessor("expertStat.expert", {
     id: "expert",
     header: "Подразделение",
-    cell: (info) => info.getValue(),
+    cell: ({ getValue, row: { original } }) => {
+      const onClick = () => {
+        setDepartaments(original.childList ?? []);
+        const exportMeta = original.expertStat;
+        setDepMetaData({
+          NEW: exportMeta.newTicket,
+          ALL: exportMeta.all,
+          CLOSED: exportMeta.closedTicket,
+          CLOSED_EXPIRED: 0,
+          ASSIGNED: exportMeta.assignedTicket,
+          EXPIRED: 0,
+          WAITING: exportMeta.waitingTicket,
+          SOLVED: exportMeta.solvedTicket,
+        });
+      };
+
+      return (
+        <Link
+          sx={{
+            textDecoration: original?.childList ? "underline" : "none",
+            cursor: original?.childList ? "pointer" : "auto",
+          }}
+          onClick={original?.childList ? onClick : undefined}
+        >
+          {getValue()}
+        </Link>
+      );
+    },
   }),
   columnHelper.accessor("expertStat.all", {
     id: "all",

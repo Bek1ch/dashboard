@@ -62,3 +62,7 @@ body,
   background-color: #ffffff;
   font-weight: 400;
 }
+
+.piechart-test .recharts-tooltip-label {
+  display: none;
+}

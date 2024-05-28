@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { fetchStatusStatistics } from "../api";
 import { Box, Button, Typography, colors } from "@mui/material";
 import DatePicker from "react-widgets/DatePicker";
 import StatBox from "../components/StatBox";
+import {
+  useApplications,
+  setApplicationsData,
+  setIsLoading,
+} from "../store/applicationsStore";
 
 const EKCLayout = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [statusStatisticsData, setStatusStatisticsData] = useState(null);
+  const { isLoading, data: applicationsData, depData } = useApplications();
+
+  const data = depData ?? applicationsData;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         const res = await fetchStatusStatistics();
-        setStatusStatisticsData(res);
+        setApplicationsData(res);
       } catch (error) {
         console.log(error);
       } finally {
@@ -56,7 +62,7 @@ const EKCLayout = () => {
       <Box marginTop={4} display="flex" columnGap={8}>
         <Box>
           <Typography color="black" fontWeight={700} fontSize={72} variant="h1">
-            {(statusStatisticsData?.ALL || 0).toLocaleString() ?? 0}
+            {data.ALL.toLocaleString()}
           </Typography>
           <Typography
             color="black"
@@ -72,27 +78,27 @@ const EKCLayout = () => {
             {/* Start cards */}
             <StatBox
               bgColor="#f43434"
-              title={statusStatisticsData?.EXPIRED ?? 0}
+              title={data.EXPIRED.toLocaleString()}
               subtitle={"Просроченные"}
             />
             <StatBox
               bgColor="#f67d0c"
-              title={statusStatisticsData?.WAITING ?? 0}
+              title={data.WAITING.toLocaleString()}
               subtitle={"В ожидании"}
             />
             <StatBox
               bgColor="#3748ed"
-              title={statusStatisticsData?.ASSIGNED ?? 0}
+              title={data.ASSIGNED.toLocaleString()}
               subtitle={"В Работе"}
             />
             <StatBox
               bgColor="#505156"
-              title={statusStatisticsData?.CLOSED_EXPIRED ?? 0}
+              title={data.CLOSED_EXPIRED.toLocaleString()}
               subtitle={"Закр. с просрочкой"}
             />
             <StatBox
               bgColor="#1b9c38"
-              title={(statusStatisticsData?.CLOSED || 0).toLocaleString() ?? 0}
+              title={data.CLOSED.toLocaleString()}
               subtitle={"Закрытые"}
             />
             {/* End cards */}
@@ -101,7 +107,7 @@ const EKCLayout = () => {
       </Box>
       <Outlet
         context={{
-          totalStatusCount: statusStatisticsData?.ALL,
+          totalStatusCount: data.ALL,
         }}
       />
     </Box>

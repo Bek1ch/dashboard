@@ -10,7 +10,7 @@ const DivisionsTable = ({ columns, data }) => {
     columns,
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
-    debugTable: true,
+    // debugTable: true,
   });
 
   return (

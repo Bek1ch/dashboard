@@ -40,8 +40,8 @@ const PieChart = () => {
   const { totalStatusCount } = useOutletContext();
 
   const callCenterStatus = {
-    id: "Кол-центр",
-    label: "Кол-центр",
+    id: "Колл-центр",
+    name: "Колл-центр",
     value: totalStatusCount,
     color: "#4551b5",
   };
@@ -49,7 +49,7 @@ const PieChart = () => {
   const chartData = [callCenterStatus];
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer className="piechart-test" width="100%" height="100%">
       <RechartsPieChart>
         <Pie
           data={chartData}
@@ -62,7 +62,7 @@ const PieChart = () => {
         >
           {chartData.map((entry, index) => (
             <Cell
-              name={callCenterStatus.label}
+              // name={callCenterStatus.name}
               tabIndex="-1"
               key={`cell-${index}`}
               fill="hsl(215, 100%, 38%)"

@@ -1,10 +1,11 @@
 import { Box, IconButton, useTheme, Typography, Icon } from "@mui/material";
-import { useContext } from "react";
-import { ColorModeContext, tokens } from "../../theme";
+// import { useContext } from "react";
+// import { ColorModeContext, tokens } from "../../theme";
 // import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 // import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import logo from "../../assets/logo.jpg";
-
+// import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
+import LogoutButton from "../../utils/logout";
 const Topbar = () => {
   // const theme = useTheme();
   // const colors = tokens(theme.palette.mode);
@@ -39,6 +40,8 @@ const Topbar = () => {
         Панель мониторинга Министерства промышленности и строительства
         Республики Казахстан
       </Typography>
+      <LogoutButton />
+
       {/* <IconButton onClick={colorMode.toggleColorMode} style={{ marginRight: '10px', fontSize: '2rem' }}>
     {theme.palette.mode === "dark" ? (
       <LightModeOutlinedIcon color="white"/>
